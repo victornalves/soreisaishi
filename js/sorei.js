@@ -1,15 +1,32 @@
 var Sorei = function() {
 
-  var dt_shinrei = [10, 20, 30, 40, 50, 100]
+  var dt_shinrei  = [10, 20, 30, 40, 50, 100]
 
-  var dt_nensai = [1, 2, 3, 4, 5, 10, 15, 20, 30, 40, 50, 100]
+  var dt_nensai   = [1, 2, 3, 4, 5, 10, 15, 20, 30, 40, 50, 100]
+
+  Sorei.prototype.data_cultos = {}
 
   Sorei.prototype.dt_falecimento = new Date('2015', '00', '01')
 
   Sorei.prototype.init = function( dt_falecimento ) {
-    this.dt_falecimento = new Date( dt_falecimento )
+
+    if( dt_falecimento != undefined )
+    {
+      this.dt_falecimento = new Date( dt_falecimento )
+    }
+
+    this.data_cultos.shinrei = this.calc_shinrei()
+    this.data_cultos.nensai  = this.calc_nensai()
+
+    console.log( this.data_cultos);
 
     console.log('Init Sorei')
+
+  }
+
+  Sorei.prototype.get_dates = function() {
+
+      return this.data_cultos
   }
 
   Sorei.prototype.calc_shinrei = function() {
@@ -21,6 +38,8 @@ var Sorei = function() {
       dias_offset = dt_shinrei[i]
 
       dt_culto = add_dias( dias_offset, this.dt_falecimento )
+
+      dt_culto = format_data( dt_culto )
 
       cultos_shinrei.push( dt_culto );
     }
@@ -37,6 +56,8 @@ var Sorei = function() {
       anos_offset = dt_nensai[i]
 
       dt_culto = add_anos( anos_offset, this.dt_falecimento )
+
+      dt_culto = format_data( dt_culto )
 
       cultos_nensai.push( dt_culto );
 
@@ -68,6 +89,15 @@ var Sorei = function() {
 
   }
 
+  var format_data = function( date ){
+    day   = date.getDate()
+    month = date.getMonth() + 1
+    year  = date.getFullYear()
+
+    return month + '/' + day + '/' + year
+  }
+
+  this.init()
 
   console.log('Objeto Sorei instanciado')
 }

@@ -240,11 +240,13 @@
         var dates = pl.options.dates_list_callback.call();
 
         for (var i = 0; i < dates.length; i++) {
-          day   = dates[i].getDate()
-          month = dates[i].getMonth() + 1
-          year  = dates[i].getFullYear()
+          // day   = dates[i].getDate()
+          // month = dates[i].getMonth() + 1
+          // year  = dates[i].getFullYear()
+          //
+          // date = month + '/' + day + '/' + year
 
-          date = month + '/' + day + '/' + year
+          date = dates[i]
 
           console.log( date )
 
