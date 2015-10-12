@@ -1,11 +1,72 @@
 <!DOCTYPE html>
-<html>
-  <head>
-    <meta charset="utf-8">
-    <title>Sorei</title>
-  </head>
-  <body>
 
-    <script type="text/javascript" src="sorei.js"></script>
-  </body>
+<html lang="pt_BR">
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+	<title>Sorei</title>
+
+	<!-- Simple CSS file for HTML page -->
+	<link rel="stylesheet" href="css/main.css" type="text/css" media="screen" title="" charset="utf-8">
+
+	<!-- jCalendar CSS - Contains Tipsy CSS - Delete as needed -->
+	<link rel="stylesheet" href="css/vendor/jquery.calendar/jquery.calendar.css" type="text/css" media="screen" title="no title" charset="utf-8">
+
+</head>
+<body>
+	<div id="header">
+		Cálculo de Datas de Shinrei Saishi e Sorei Saishi</a>.
+	</div>
+	<div id="main-container">
+
+	</div>
+
+
+  <!-- Source jQuery -->
+  <script src="js/vendor/jquery/jquery.min.js" type="text/javascript" charset="utf-8"></script>
+
+  <!-- Source Sorei.js -->
+  <script src="js/sorei.js" type="text/javascript" charset="utf-8"></script>
+
+  <!-- Source CalendarJS - Contains Tipsy jQuery Plugin - Delete as needed -->
+  <script src="js/vendor/jquery.calendar/jquery.calendar.js" type="text/javascript" charset="utf-8"></script>
+
+
+  <!-- Call the Calendar -->
+	<script>
+
+		$(document).ready(function() {
+			$("#main-container").calendar({
+				tipsy_gravity: 's', // How do you want to anchor the tipsy notification? (n / s / e / w)
+				click_callback: calendar_callback, // Callback to return the clicked date
+				dates_list_callback: dates_list_callback, // Callback that returns the list of dates
+				scroll_to_date: false // Scroll to the current date?
+			});
+		});
+
+		//
+		// Example of callback - do something with the returned date
+		var calendar_callback = function(date) {
+
+			//
+			// Returned date is a date object containing the day, month, and year.
+			// date.day = day; date.month = month; date.year = year;
+			alert("Open your Javascript console to see the returned result object.");
+			console.log(date);
+		}
+
+
+		var dates_list_callback = function(a) {
+
+      var s = new Sorei();
+
+      var dates = s.calc_shinrei()
+
+      console.log( dates )
+
+      return dates
+
+		}
+
+	</script>
+</body>
 </html>

@@ -9,7 +9,7 @@ var Sorei = function() {
   Sorei.prototype.init = function( dt_falecimento ) {
     this.dt_falecimento = new Date( dt_falecimento )
 
-    console.log('Init')
+    console.log('Init Sorei')
   }
 
   Sorei.prototype.calc_shinrei = function() {
@@ -22,9 +22,10 @@ var Sorei = function() {
 
       dt_culto = add_dias( dias_offset, this.dt_falecimento )
 
-      console.log( dias_offset + ' ' + dt_culto );
-
+      cultos_shinrei.push( dt_culto );
     }
+
+    return cultos_shinrei
   }
 
   Sorei.prototype.calc_nensai = function() {
@@ -37,9 +38,11 @@ var Sorei = function() {
 
       dt_culto = add_anos( anos_offset, this.dt_falecimento )
 
-      console.log( anos_offset + ' ' + dt_culto );
+      cultos_nensai.push( dt_culto );
 
     }
+
+    return cultos_nensai
   }
 
 
@@ -66,12 +69,5 @@ var Sorei = function() {
   }
 
 
-  console.log('Objeto instanciado')
+  console.log('Objeto Sorei instanciado')
 }
-
-var s = new Sorei();
-
-console.log( 'shinrei' );
-s.calc_shinrei()
-console.log( 'nensai' );
-s.calc_nensai()
