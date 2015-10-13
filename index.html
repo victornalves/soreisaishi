@@ -14,7 +14,7 @@
 </head>
 <body>
 	<div id="header">
-		Cálculo de Datas de Shinrei Saishi e Sorei Saishi. <input type="date" name="dt_falecimento" class="dt_falecimento js-input-dt-falecimento"><input class="js-submit-dt-falecimento" type="button" value="Calcular Data de Cultos" disabled>
+		Cálculo de Datas de Shinrei Saishi e Sorei Saishi. <input type="text" name="nome" class="nome js-input-nome" placeholder="Nome do Espírito"><input type="date" name="dt_falecimento" class="dt_falecimento js-input-dt-falecimento"><input class="js-submit-dt-falecimento" type="button" value="Calcular Data de Cultos" disabled><input class="js-download-cal" type="button" value="Baixar agenda de cultos" disabled>
 	</div>
 	<div id="main-container">
 
@@ -35,6 +35,9 @@
 
   <!-- Source CalendarJS -->
   <script src="js/vendor/jquery.calendar/jquery.calendar.js" type="text/javascript" charset="utf-8"></script>
+
+  <!-- Source IcsJS -->
+  <script src="js/vendor/ics.js/ics.deps.min.js" type="text/javascript" charset="utf-8"></script>
 
 
   <!-- Call the Calendar -->
@@ -74,7 +77,20 @@
           				scroll_to_date: false // Scroll to the current date?
           			});
 
+                $('.js-download-cal')
+                          .prop('disabled', false)
+
               })
+              
+      $('.js-download-cal')
+                .click(function(){
+                  var cal = ics();
+                  cal.addEvent('Christmas', 'Christian holiday celebrating the birth of Jesus Christ', 'Bethlehem', '12/25/2013', '12/25/2013');
+                  cal.addEvent('Christmas', 'Christian holiday celebrating the birth of Jesus Christ', 'Bethlehem', '12/25/2014', '12/25/2014');
+                  cal.addEvent('New Years', 'Watch the ball drop!', 'New York', '01/01/2015', '01/01/2015');
+                  cal.addEvent('New Years', 'Watch the ball drop!', 'New York', '01/01/2016', '01/01/2016');
+                  cal.download('Holidays')
+                })
 		});
 
 		//
