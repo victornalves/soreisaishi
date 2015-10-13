@@ -14,7 +14,7 @@
 </head>
 <body>
 	<div id="header">
-		Cálculo de Datas de Shinrei Saishi e Sorei Saishi. <input type="date" name="dt_falecimento" class="dt_falecimento"><input class="js-submit-dt-falecimento" type="button" value="Calcular Data de Cultos" disabled>
+		Cálculo de Datas de Shinrei Saishi e Sorei Saishi. <input type="date" name="dt_falecimento" class="dt_falecimento js-input-dt-falecimento"><input class="js-submit-dt-falecimento" type="button" value="Calcular Data de Cultos" disabled>
 	</div>
 	<div id="main-container">
 
@@ -41,6 +41,13 @@
 	<script>
 
     $(document).ready(function() {
+
+      $('.js-input-dt-falecimento').keypress(function (e) {
+        if (e.which == 13) {
+          $('.js-submit-dt-falecimento').click();
+          return false;
+        }
+      });
 
       $('.js-submit-dt-falecimento')
               .prop('disabled', false)
