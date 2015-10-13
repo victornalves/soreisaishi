@@ -31,10 +31,13 @@
     month: d.getMonth(),
     current_year: d.getFullYear(),
     tipsy_gravity: 's',
-    scroll_to_date: true
+    scroll_to_date: true,
+    shinrei_dates: {},
+    nensai_dates: {}
   };
 
   month_array = [
+    '',
     'Janeiro',
     'Fevereiro',
     'Março',
@@ -50,6 +53,7 @@
   ];
 
   month_days = [
+    '',
     '31', // jan
     '28', // feb
     '31', // mar
@@ -64,15 +68,22 @@
     '31' // dec
   ];
 
+  shinrei_class = 'shinrei'
+  nensai_class  = 'nensai'
+
   //
   // Main Plugin Object
   function Calendar(element, options) {
-    pl = this;
-    this.element = element;
-    this.options = $.extend({}, defaults, options);
+    pl             = this;
+    this.element   = element;
+    this.options   = $.extend({}, defaults, options);
     this._defaults = defaults;
-    this._name = pluginName;
+    this._name     = pluginName;
 
+    this.shinrei_dates =
+    this.nensai_dates  = {}
+
+    console.log( this.options );
 
     //
     // Begin
@@ -82,24 +93,17 @@
 
   $.extend(Calendar.prototype, {
     init: function() {
+
 			//
 	    // Call print - who knows, maybe more will be added to the init function...
 	    this.print();
-
-      this.highlight_dates();
 		},
-		print: function(year) {
-			//
-	    // Pass in any year you damn like.
-	    var the_year = (year) ? parseInt(year) : parseInt(pl.options.year);
+		print: function() {
+      console.log('Initializing printing');
 
 	    //
 	    // First, clear the element
 	    $(this.element).empty();
-
-	    $('.label').css({
-	      display: 'none'
-	    });
 
 	    //
 	    // Append parent div to the element
@@ -109,60 +113,25 @@
 	    // Set reference for calendar DOM object
 	    var $_calendar = $('#calendar');
 
-	    //
-	    // Let's append the year
-	    pl.print_year( the_year, $_calendar )
+      //
+      // Pass in any year you damn like.
+      var dates = pl.options.nensai_dates.dates
 
-	    //
-	    // Navigation arrows
-	    pl.print_navigation( $_calendar )
+      var the_year = dates[0].year   // TODO: merge Date_Container lists
 
-	    //
-	    // Add a clear for the floated elements
-	    pl.print_clear_float( $_calendar )
+      for (var i = 0; i < dates.length; i++) {
 
-	    //
-	    // Loop over the month arrays, loop over the characters in teh string, and apply to divs.
-	    $.each(month_array, function(i, o) {
+        pl.print_year( dates[i].year, $_calendar )
 
-	      //
-	      // Create a scrollto marker
-	      $_calendar.append("<div id='" + o + "'></div>");
+        console.log(dates[i].months);
 
-        //
-        // Let's append the month name
-        pl.print_month( month_array[i], $_calendar )
+        $.each( dates[i].months , function(i, o) {
+          pl.print_month( the_year, o.month , $_calendar )
+        })
 
-	      //
-	      // Add a clear for the floated elements
-	      pl.print_clear_float( $_calendar )
+        pl.print_clear_float( $_calendar )
 
-	      //
-	      // Check for leap year
-	      if (o === 'Fevereiro') {
-          month_days[i] = pl.fix_leap_year( the_year )
-        }
-
-	      for (j = 1; j <= parseInt(month_days[i]); j++) {
-
-	        //
-	        // Check for today
-	        var today = '';
-	        if (i === pl.options.month && the_year === d.getFullYear()) {
-	          if (j === pl.options.today) {
-	            today = 'today';
-	          }
-	        }
-
-	        //
-	        // Looping over numbers, apply them to divs
-	        $_calendar.append("<div data-date='" + (parseInt(i) + 1) + '/' + j + '/' + the_year + "' class='label day " + today + "'>" + j + '</div>');
-	      }
-
-	      //
-	      // Add a clear for the floated elements
-	      pl.print_clear_float( $_calendar )
-	    });
+      }
 
 	    //
 	    // Loop over the elements and show them one by one.
@@ -217,30 +186,8 @@
 	    $('.label').tipsy({
 	      gravity: pl.options.tipsy_gravity
 	    });
+      console.log('End printing');
 		},
-    highlight_dates: function() {
-      if (typeof pl.options.dates_list_callback == 'function') {
-
-        var dates = pl.options.dates_list_callback.call();
-
-        for (var i = 0; i < dates.length; i++) {
-          // day   = dates[i].getDate()
-          // month = dates[i].getMonth() + 1
-          // year  = dates[i].getFullYear()
-          //
-          // date = month + '/' + day + '/' + year
-
-          date = dates[i]
-
-          console.log( date )
-
-          $('[data-date="' + date + '"]').addClass('shinrei')
-        }
-
-
-        // console.log(dates)
-      }
-    },
 		isLeap: function(year) {
 			var leap = 0;
 	    leap = new Date(year, 1, 29).getMonth() == 1;
@@ -280,6 +227,8 @@
       $.each(the_year.toString().split(''), function(i, o) {
 	      $_container.append('<div class=\"year\">' + o + '</div>');
 	    });
+
+      pl.print_clear_float( $_container )
     },
     print_navigation: function( $_container ) {
       //
@@ -297,14 +246,54 @@
 	    // Add a clear for the floated elements
 	    $_container.append('<div class=\"clear\"></div>');
     },
-    print_month: function( month, $_container ) {
+    print_month_title: function( month, $_container ) {
       $.each(month.split(''), function(i, o) {
 
         //
         // Looping over characters, apply them to divs
         $_container.append('<div class=\"label bold\">' + o + '</div>');
 
+        //
+        // Create a scrollto marker
+        $_container.append("<div id='" + o + "'></div>");
+
       });
+    },
+    print_month: function( the_year, month, $_container) {
+
+      //
+      // Let's append the month name
+      pl.print_month_title( month_array[month], $_container )
+
+      //
+      // Add a clear for the floated elements
+      pl.print_clear_float( $_container )
+
+      // //
+      // // Check for leap year
+      if ( month_array[month] === 'Fevereiro') {
+        month_days[i] = pl.fix_leap_year( the_year )
+      }
+
+      for (j = 1; j <= parseInt(month_days[ month ]); j++) {
+
+        //
+        // Check for today
+        var today = '';
+        if (i === pl.options.month && the_year === d.getFullYear()) {
+          if (j === pl.options.today) {
+            today = 'today';
+          }
+        }
+
+        //
+        // Looping over numbers, apply them to divs
+        $_container.append("<div data-date='" + (parseInt(i) + 1) + '/' + j + '/' + the_year + "' class='label day " + today + "'>" + j + '</div>');
+
+      }
+      //
+      // Add a clear for the floated elements
+      pl.print_clear_float( $_container )
     }
   });
 

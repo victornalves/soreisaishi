@@ -25,6 +25,10 @@
 
 }
 
+#calendar .label {
+	display: none;
+}
+
 #calendar .label:hover {
 	background: #dcdcdc;
 }

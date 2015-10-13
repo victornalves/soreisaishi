@@ -23,7 +23,7 @@ var Sorei = function() {
     this.data_cultos.shinrei = this.calc_shinrei()
     this.data_cultos.nensai  = this.calc_nensai()
 
-    console.log( this.data_cultos);
+    // console.log( this.data_cultos);
 
     console.log('Init Sorei')
 
