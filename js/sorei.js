@@ -1,3 +1,8 @@
+/************************************************************************************************/
+//
+// Sorei Class
+//
+/************************************************************************************************/
 var Sorei = function() {
 
   var dt_shinrei  = [10, 20, 30, 40, 50, 100]
@@ -31,7 +36,7 @@ var Sorei = function() {
 
   Sorei.prototype.calc_shinrei = function() {
 
-    var cultos_shinrei = []
+    var cultos_shinrei = new Date_Container()
 
     for (var i = 0; i < dt_shinrei.length; i++) {
 
@@ -39,9 +44,7 @@ var Sorei = function() {
 
       dt_culto = add_dias( dias_offset, this.dt_falecimento )
 
-      dt_culto = format_data( dt_culto )
-
-      cultos_shinrei.push( dt_culto );
+      cultos_shinrei.add_date( dt_culto )
     }
 
     return cultos_shinrei
@@ -49,7 +52,7 @@ var Sorei = function() {
 
   Sorei.prototype.calc_nensai = function() {
 
-    var cultos_nensai = []
+    var cultos_nensai = new Date_Container()
 
     for (var i = 0; i < dt_nensai.length; i++) {
 
@@ -57,9 +60,7 @@ var Sorei = function() {
 
       dt_culto = add_anos( anos_offset, this.dt_falecimento )
 
-      dt_culto = format_data( dt_culto )
-
-      cultos_nensai.push( dt_culto );
+      cultos_nensai.add_date( dt_culto );
 
     }
 
@@ -100,4 +101,90 @@ var Sorei = function() {
   this.init()
 
   console.log('Objeto Sorei instanciado')
+}
+
+
+
+/************************************************************************************************/
+//
+// Date Container Class
+//
+/************************************************************************************************/
+ var Date_Container = function() {
+
+   this.dates = []
+
+   _year = function(year, months){
+    this.year   = year,
+    this.months = ( months.length == undefined ? [months] : months ) || []
+   }
+
+   _month = function(month, days){
+    this.month = month,
+    this.days = ( days.length == undefined ? [days] : days ) || []
+   }
+}
+
+Date_Container.prototype.add_date = function( date ) {
+
+  day   = date.getDate()
+  month = date.getMonth() + 1
+  year  = date.getFullYear()
+
+
+  found_year = this.dates.find( function(e, i, a) { return e.year == this.year }, {year: year } )
+
+  if( found_year == undefined )
+  {
+    this.dates.push( new _year( year, new _month( month, day )) )
+  }
+  else
+  {
+    found_month = found_year.months.find( function(e, i, a) { return e.month == this.month }, {month: month } )
+
+    if( found_month == undefined )
+    {
+      found_year.months.push( new _month( month, day ))
+    }
+    else
+    {
+      found_month.days.push( day )
+    }
+  }
+
+}
+
+dates = new Date_Container()
+
+dates.add_date( new Date( "01/01/2015" ))
+
+/************************************************************************************************/
+//
+// Polyfills
+//
+/************************************************************************************************/
+
+// Array Find
+// https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/find
+if (!Array.prototype.find) {
+  Array.prototype.find = function(predicate) {
+    if (this === null) {
+      throw new TypeError('Array.prototype.find called on null or undefined');
+    }
+    if (typeof predicate !== 'function') {
+      throw new TypeError('predicate must be a function');
+    }
+    var list = Object(this);
+    var length = list.length >>> 0;
+    var thisArg = arguments[1];
+    var value;
+
+    for (var i = 0; i < length; i++) {
+      value = list[i];
+      if (predicate.call(thisArg, value, i, list)) {
+        return value;
+      }
+    }
+    return undefined;
+  };
 }
