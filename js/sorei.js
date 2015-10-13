@@ -6,7 +6,6 @@
 var Sorei = function() {
 
   var dt_shinrei  = [10, 20, 30, 40, 50, 100]
-
   var dt_nensai   = [1, 2, 3, 4, 5, 10, 15, 20, 30, 40, 50, 100]
 
   Sorei.prototype.data_cultos = {}
@@ -31,7 +30,9 @@ var Sorei = function() {
 
   Sorei.prototype.get_dates = function() {
 
-      return this.data_cultos
+      this.data_cultos.shinrei.merge( this.data_cultos.nensai )
+
+      return this.data_cultos.shinrei
   }
 
   Sorei.prototype.calc_shinrei = function() {
@@ -155,6 +156,51 @@ Date_Container.prototype.add_date = function( date, type ) {
     {
       found_month.days.push( new _day( day, type ) )
     }
+  }
+
+}
+
+Date_Container.prototype.merge = function( b ) {
+
+  var b_dates = b.dates
+
+  for (var i = 0; i < b_dates.length; i++) {
+
+    found_year = this.dates.find( function(e, i, a) { return e.year == this.year }, {year: b_dates[i].year } )
+
+    if( found_year == undefined )
+    {
+      this.dates.push( b_dates[i] )
+    }
+    else
+    {
+      for (var j = 0; j < b_dates[i].months.length; j++) {
+
+        found_month = found_year.months.find( function(e, i, a) { return e.month == this.month }, {month: b_dates[i].months[j].month } )
+
+        if( found_month == undefined )
+        {
+          found_year.months.push( b_dates[i].months[j] )
+        }
+        else
+        {
+          for (var k = 0; k < b_dates[i].months[j].days.length; k++) {
+
+            found_day = found_month.days.find( function(e, i, a) { return e.day == this.day }, {day: b_dates[i].months[j].days[k].day } )
+
+            if( found_day == undefined )
+            {
+              found_month.days.push( b_dates[i].months[j].days[k] )
+            }
+
+          }
+
+        }
+
+      }
+
+    }
+
   }
 
 }

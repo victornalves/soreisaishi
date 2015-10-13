@@ -82,9 +82,7 @@
 
     this.shinrei_dates =
     this.nensai_dates  = {}
-
-    console.log( this.options );
-
+    
     //
     // Begin
     this.init();
@@ -115,7 +113,7 @@
 
       //
       // Pass in any year you damn like.
-      var dates = pl.options.shinrei_dates.dates
+      var dates = pl.options.nensai_dates.dates
 
       var the_year = dates[0].year   // TODO: merge Date_Container lists
 
