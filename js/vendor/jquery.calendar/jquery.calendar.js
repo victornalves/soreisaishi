@@ -115,7 +115,7 @@
 
       //
       // Pass in any year you damn like.
-      var dates = pl.options.nensai_dates.dates
+      var dates = pl.options.shinrei_dates.dates
 
       var the_year = dates[0].year   // TODO: merge Date_Container lists
 
@@ -123,10 +123,10 @@
 
         pl.print_year( dates[i].year, $_calendar )
 
-        console.log(dates[i].months);
+        the_year = dates[i].year;
 
         $.each( dates[i].months , function(i, o) {
-          pl.print_month( the_year, o.month , $_calendar )
+          pl.print_month( the_year, o.month, o.days , $_calendar )
         })
 
         pl.print_clear_float( $_calendar )
@@ -259,7 +259,7 @@
 
       });
     },
-    print_month: function( the_year, month, $_container) {
+    print_month: function( the_year, month, days, $_container) {
 
       //
       // Let's append the month name
@@ -271,8 +271,8 @@
 
       // //
       // // Check for leap year
-      if ( month_array[month] === 'Fevereiro') {
-        month_days[i] = pl.fix_leap_year( the_year )
+      if ( month === 2) {
+        month_days[ month ] = pl.fix_leap_year( the_year )
       }
 
       for (j = 1; j <= parseInt(month_days[ month ]); j++) {
@@ -286,9 +286,17 @@
           }
         }
 
+        var found_day = days.find( function(e, i, a) { return e.day == this.day }, {day: j } )
+
+        highlight_class = 'irei'
+        if( found_day != undefined )
+        {
+          highlight_class = found_day.type
+        }
+
         //
         // Looping over numbers, apply them to divs
-        $_container.append("<div data-date='" + (parseInt(i) + 1) + '/' + j + '/' + the_year + "' class='label day " + today + "'>" + j + '</div>');
+        $_container.append("<div data-date='" + (parseInt(month) + 1) + '/' + j + '/' + the_year + "' class='label day " + today + " " + highlight_class + "'>" + j + '</div>');
 
       }
       //

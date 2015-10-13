@@ -11,7 +11,7 @@ var Sorei = function() {
 
   Sorei.prototype.data_cultos = {}
 
-  Sorei.prototype.dt_falecimento = new Date('2015', '00', '01')
+  Sorei.prototype.dt_falecimento = new Date('2015', '01', '01')
 
   Sorei.prototype.init = function( dt_falecimento ) {
 
@@ -44,7 +44,7 @@ var Sorei = function() {
 
       dt_culto = add_dias( dias_offset, this.dt_falecimento )
 
-      cultos_shinrei.add_date( dt_culto )
+      cultos_shinrei.add_date( dt_culto, 'shinrei' )
     }
 
     return cultos_shinrei
@@ -60,7 +60,7 @@ var Sorei = function() {
 
       dt_culto = add_anos( anos_offset, this.dt_falecimento )
 
-      cultos_nensai.add_date( dt_culto );
+      cultos_nensai.add_date( dt_culto, 'nensai' );
 
     }
 
@@ -123,9 +123,14 @@ var Sorei = function() {
     this.month = month,
     this.days = ( days.length == undefined ? [days] : days ) || []
    }
+
+   _day = function(day, type){
+    this.day = day,
+    this.type = type || 'irei'
+   }
 }
 
-Date_Container.prototype.add_date = function( date ) {
+Date_Container.prototype.add_date = function( date, type ) {
 
   day   = date.getDate()
   month = date.getMonth() + 1
@@ -136,7 +141,7 @@ Date_Container.prototype.add_date = function( date ) {
 
   if( found_year == undefined )
   {
-    this.dates.push( new _year( year, new _month( month, day )) )
+    this.dates.push( new _year( year, new _month( month, new _day( day, type ) )) )
   }
   else
   {
@@ -144,11 +149,11 @@ Date_Container.prototype.add_date = function( date ) {
 
     if( found_month == undefined )
     {
-      found_year.months.push( new _month( month, day ))
+      found_year.months.push( new _month( month, new _day( day, type ) ))
     }
     else
     {
-      found_month.days.push( day )
+      found_month.days.push( new _day( day, type ) )
     }
   }
 
