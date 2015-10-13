@@ -22,7 +22,7 @@ var Sorei = function( dt_falecimento ) {
     this.data_cultos.shinrei = this.calc_shinrei()
     this.data_cultos.nensai  = this.calc_nensai()
 
-    console.log('Init Sorei')
+    console.log('Init Sorei ' + this.dt_falecimento)
 
   }
 
