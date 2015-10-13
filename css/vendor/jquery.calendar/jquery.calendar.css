@@ -34,7 +34,7 @@
 }
 
 #calendar .label.today {
-	background: #399afe;
+	background: #399afe !important;
 }
 
 #calendar .label.irei {

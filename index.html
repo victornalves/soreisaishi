@@ -14,7 +14,7 @@
 </head>
 <body>
 	<div id="header">
-		Cálculo de Datas de Shinrei Saishi e Sorei Saishi</a>.
+		Cálculo de Datas de Shinrei Saishi e Sorei Saishi. <input type="date" name="dt_falecimento" class="dt_falecimento"><input class="js-submit-dt-falecimento" type="button" value="Calcular Data de Cultos" disabled>
 	</div>
 	<div id="main-container">
 
@@ -40,19 +40,32 @@
   <!-- Call the Calendar -->
 	<script>
 
-		$(document).ready(function() {
+    $(document).ready(function() {
 
-      var s = new Sorei()
+      $('.js-submit-dt-falecimento')
+              .prop('disabled', false)
+              .click(function(){
 
-      var dates = s.get_dates()
+                var dt = $('.dt_falecimento').val()
 
-			$("#main-container").calendar({
-				tipsy_gravity: 's', // How do you want to anchor the tipsy notification? (n / s / e / w)
-				click_callback: calendar_callback, // Callback to return the clicked date
-				shinrei_dates: dates, // Sets value of shinrei dates
-				nensai_dates: dates, // Sets value of nensai dates
-				scroll_to_date: false // Scroll to the current date?
-			});
+                // dt = dt.split('/')
+                //
+                // dt = dt[1] + '/' + dt[0] + '/' + dt[2]
+
+                var s = new Sorei( new Date( dt ) )
+
+                var dates = s.get_dates()
+
+                $("#main-container").empty()
+
+          			$("#main-container").calendar({
+          				tipsy_gravity: 's', // How do you want to anchor the tipsy notification? (n / s / e / w)
+          				click_callback: calendar_callback, // Callback to return the clicked date
+          				dates: dates, // Sets value of shinrei dates
+          				scroll_to_date: false // Scroll to the current date?
+          			});
+
+              })
 		});
 
 		//

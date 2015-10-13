@@ -3,7 +3,7 @@
 // Sorei Class
 //
 /************************************************************************************************/
-var Sorei = function() {
+var Sorei = function( dt_falecimento ) {
 
   var dt_shinrei  = [10, 20, 30, 40, 50, 100]
   var dt_nensai   = [1, 2, 3, 4, 5, 10, 15, 20, 30, 40, 50, 100]
@@ -21,8 +21,6 @@ var Sorei = function() {
 
     this.data_cultos.shinrei = this.calc_shinrei()
     this.data_cultos.nensai  = this.calc_nensai()
-
-    // console.log( this.data_cultos);
 
     console.log('Init Sorei')
 
@@ -99,7 +97,7 @@ var Sorei = function() {
     return month + '/' + day + '/' + year
   }
 
-  this.init()
+  this.init( dt_falecimento )
 
   console.log('Objeto Sorei instanciado')
 }

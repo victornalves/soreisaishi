@@ -28,12 +28,11 @@
     d: d,
     year: d.getFullYear(),
     today: d.getDate(),
-    month: d.getMonth(),
+    month: d.getMonth() + 1,
     current_year: d.getFullYear(),
     tipsy_gravity: 's',
     scroll_to_date: true,
-    shinrei_dates: {},
-    nensai_dates: {}
+    dates: {}
   };
 
   month_array = [
@@ -80,9 +79,8 @@
     this._defaults = defaults;
     this._name     = pluginName;
 
-    this.shinrei_dates =
-    this.nensai_dates  = {}
-    
+    this.dates = {}
+
     //
     // Begin
     this.init();
@@ -113,7 +111,7 @@
 
       //
       // Pass in any year you damn like.
-      var dates = pl.options.nensai_dates.dates
+      var dates = pl.options.dates.dates
 
       var the_year = dates[0].year   // TODO: merge Date_Container lists
 
@@ -204,19 +202,19 @@
 	    var da = d.getDay();
 
 	    if (da === 1) {
-	      returned_date = 'Monday';
+	      returned_date = 'Segunda-feira';
 	    } else if (da === 2) {
-	      returned_date = 'Tuesday';
+	      returned_date = 'Terça-feira';
 	    } else if (da === 3) {
-	      returned_date = 'Wednesday';
+	      returned_date = 'Quarta-feira';
 	    } else if (da === 4) {
-	      returned_date = 'Thursday';
+	      returned_date = 'Quinta-feira';
 	    } else if (da === 5) {
-	      returned_date = 'Friday';
+	      returned_date = 'Sexta-feira';
 	    } else if (da === 6) {
-	      returned_date = 'Saturday';
+	      returned_date = 'Sábado';
 	    } else if (da === 0) {
-	      returned_date = 'Sunday';
+	      returned_date = 'Domingo';
 	    }
 
 	    return returned_date;
@@ -278,7 +276,7 @@
         //
         // Check for today
         var today = '';
-        if (i === pl.options.month && the_year === d.getFullYear()) {
+        if (month === pl.options.month && the_year === d.getFullYear()) {
           if (j === pl.options.today) {
             today = 'today';
           }
@@ -321,11 +319,7 @@
   //
   // Plugin Instantiation
   $.fn[pluginName] = function(options) {
-    return this.each(function() {
-      if (!$.data(this, "plugin_" + pluginName)) {
-        $.data(this, "plugin_" + pluginName, new Calendar(this, options));
-      }
-    });
+    return $.data(this, "plugin_" + pluginName, new Calendar(this, options));
   };
 
 })(jQuery, window, document);

@@ -10,9 +10,12 @@
 - Corrigir layout de anos e títulos de mês
 - ~~Print de calendário com datas marcadas em tags~~
 - ~~Esconder meses sem datas de Shinrei ou Nensai~~
-- Input de data falecimento
+- ~~Input de data falecimento~~
+- Melhorar Input de data falecimento
 - ~~Print de calendários de anos em pilha. Até 100 anos após dt_falecimento~~
 - Toggle de Cultos
+- Tooltip com informacao sobre o culto
+- Fix Weekdays
 - Baixar calendário em formato Google Calendar, iCal, etc
 - Input de dados sobre espírito
 - Enviar por email
